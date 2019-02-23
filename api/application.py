@@ -1,9 +1,8 @@
 from flask import Flask, redirect, render_template, request, url_for
 from werkzeug import secure_filename
 from fastai.vision import load_learner, open_image
-import torch
 import os
-import pickle
+
 
 # folder for uploads save
 UPLOADS_DIRECTORY = 'static/uploads'
