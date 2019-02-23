@@ -8,18 +8,19 @@ app = Flask(__name__)
 app.config['UPLOADS_DIRECTOR'] = UPLOADS_DIRECTORY
 app.config['EXTENSIONS'] = EXTENSIONS
 
-@app.route("/")
-def form(request):
-    return HTMLResponse(
-        """
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="file">
-            <input type="submit" value="Upload Image">
-        </form>
-        Or submit a URL:
-        <form action="/classify-url" method="get">
-            <input type="url" name="url">
-            <input type="submit" value="Fetch and analyze image">
-        </form>
-    """)
+# main route
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+def check_if_allowed(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['EXTENSIONS']
+
+@app.rout('/upload', methods=['POST'])
+def upload():
+    file = request.files['file']
+    if file and check_if_allowed(file.filename):
+        filename = secure_filename(file.filename)
+        save_to=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_to)
