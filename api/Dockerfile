@@ -10,5 +10,5 @@ COPY requirements.txt /home/project/app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # copy content
-COPY . /app
-COPY ./app/models /home/project/app/models
+COPY . /home/project/app
+COPY ./models /home/project/app/models
