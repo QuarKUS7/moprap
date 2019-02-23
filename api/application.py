@@ -1,26 +1,50 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, render_template, request, url_for
 from werkzeug import secure_filename
+from fastai.vision import load_learner, open_image
+import torch
+import os
+import pickle
 
-UPLOADS_DIRECTORY = 'uploads/'
+# folder for uploads save
+UPLOADS_DIRECTORY = 'static/uploads'
+# valid extension
 EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
-app.config['UPLOADS_DIRECTOR'] = UPLOADS_DIRECTORY
+app.config['UPLOADS_DIRECTORY'] = UPLOADS_DIRECTORY
 app.config['EXTENSIONS'] = EXTENSIONS
+
+classes = ['fico', 'kiska']
+
+# load model
+model = load_learner('./models')
 
 # main route
 @app.route('/')
 def index():
     return render_template('index.html')
 
-def check_if_allowed(filename):
+def check_if_valid(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['EXTENSIONS']
 
-@app.rout('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
-    if file and check_if_allowed(file.filename):
+    # check if valid
+    if file and check_if_valid(file.filename):
+        # make the filename to be a secure version of it.
         filename = secure_filename(file.filename)
-        save_to=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # save image to directory
+        save_to=os.path.join(app.config['UPLOADS_DIRECTORY'], filename)
         file.save(save_to)
+        # make prediction
+        prediction,_,_ = model.predict(open_image(save_to))
+        return redirect(url_for('classification', result=prediction))
+
+@app.route('/classification/<result>')
+def classification(result):
+    return render_template('result.html', result=result)
+
+if __name__ == '__main__':
+   app.run(debug=True)
