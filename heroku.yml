@@ -7,4 +7,4 @@ run:
   web:
     command:
       - gunicorn -w 1 -b :5000 app:app
-    image name: web
+    image name: worker
