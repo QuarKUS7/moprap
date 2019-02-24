@@ -5,3 +5,4 @@ build:
     worker: nginx/Dockerfile.worker
 run:
   web: gunicorn -w 1 -b :5000 app:app
+  image: web
