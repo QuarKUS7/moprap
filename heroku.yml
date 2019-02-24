@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: api/Dockerfile.web
+  docker:
+    worker: nginx/Dockerfile.worker
