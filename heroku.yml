@@ -3,3 +3,5 @@ build:
     web: api/Dockerfile.web
   docker:
     worker: nginx/Dockerfile.worker
+ run:
+  web: gunicorn -w 1 -b :5000 app:app
