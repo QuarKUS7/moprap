@@ -1,5 +1,7 @@
 # Docker file for
 FROM nginx:1.15.8
-
+USER root
 RUN rm /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/
+
+EXPOSE 8001
