@@ -2,7 +2,7 @@ FROM python:3.6.2
 
 # directories needed
 RUN mkdir -p /home/project/app
-RUN mkdir -p /home/project/app/models
+#RUN mkdir -p /home/project/app/models
 WORKDIR /home/project/app
 
 # copy and install requirements
@@ -11,4 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # copy content
 COPY . /home/project/app
-COPY ./models /home/project/app/models
+#COPY ./models /home/project/app/models
+
+EXPOSE 5000
+
+CMD ["gunicorn", "-w 1", "-b :5000", "app:app"]
