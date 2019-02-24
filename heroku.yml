@@ -1,9 +1,0 @@
-build:
-  docker:
-    web: api/Dockerfile.web
-    worker: nginx/Dockerfile.worker
-release:
-  command:
-    - gunicorn -w 1 -b :5000 app:app
-  image: worker
-
