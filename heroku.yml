@@ -1,10 +1,7 @@
 build:
   docker:
     web: api/Dockerfile.web
-  docker:
     worker: nginx/Dockerfile.worker
 run:
-  worker:
-    command:
-      - gunicorn -w 1 -b :5000 app:app
-    image name: worker
+  worker: gunicorn -w 1 -b :5000 app:app
+
