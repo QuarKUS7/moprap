@@ -5,7 +5,7 @@ services:
 before_install:
   - chmod +x ./model_download.sh
   - docker build -t quarkus7/nginx_mop ./nginx
-  - docker build -t quatkus7/app_mop ./app
+  - docker build -t quatkus7/app_mop ./api
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
