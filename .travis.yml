@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - chmod +x ./model_download.sh
+  - docker build -t quarkus7/nginx_mop ./nginx
+  - docker build -t quatkus7/app_mop ./app
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push quarkus7/nginx_mop
+  - docker push quarkus7/app_mop
+  - heroku container:login
+  - docker tag quarkus7/app_mop registry.heroku.com/$HEROKU_APP_NAME/web
+  - docker tag quarkus7/nginx registry.heroku.com/$HEROKU_APP_NAME/worker
+  - docker push registry.heroku.com/$HEROKU_APP_NAME/web
+  - docker push registry.heroku.com/$HEROKU_APP_NAME/worker
+  - heroku container:release web worker --app $HEROKU_APP_NAME
