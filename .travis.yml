@@ -16,7 +16,7 @@ after_success:
   - docker push quarkus7/app_mop
   - heroku container:login
   - docker tag quarkus7/app_mop registry.heroku.com/$HEROKU_APP_NAME/web
-  - docker tag quarkus7/nginx registry.heroku.com/$HEROKU_APP_NAME/worker
+  - docker tag quarkus7/nginx_mop registry.heroku.com/$HEROKU_APP_NAME/worker
   - docker push registry.heroku.com/$HEROKU_APP_NAME/web
   - docker push registry.heroku.com/$HEROKU_APP_NAME/worker
   - heroku container:release web worker --app $HEROKU_APP_NAME
