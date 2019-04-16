@@ -7,6 +7,9 @@ before_install:
   - docker build -t quarkus7/nginx_mop ./nginx
   - docker build -t quatkus7/app_mop ./api
 
+script:
+  - docker run quarkus7/app_mop python test.py
+
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push quarkus7/nginx_mop
