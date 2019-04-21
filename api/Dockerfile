@@ -21,4 +21,4 @@ COPY . .
 
 RUN ./model_download.sh
 
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --reload
+CMD gunicorn app:app --bind 0.0.0.0:8000 --reload
