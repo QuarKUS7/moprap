@@ -14,9 +14,3 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push quarkus7/nginx_mop
   - docker push quarkus7/app_mop
-  - heroku container:login
-  - docker tag quarkus7/app_mop registry.heroku.com/$HEROKU_APP_NAME/worker
-  - docker tag quarkus7/nginx_mop registry.heroku.com/$HEROKU_APP_NAME/web
-  - docker push registry.heroku.com/$HEROKU_APP_NAME/web
-  - docker push registry.heroku.com/$HEROKU_APP_NAME/worker
-  - heroku container:release web worker --app $HEROKU_APP_NAME
